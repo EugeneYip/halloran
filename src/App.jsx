@@ -961,13 +961,17 @@ function App() {
               ))}
             </div>
             <div className="subsectionTitle"><Text mode={mode} en="Decisions needed" zh="需要決策" /></div>
-            <div className="decisionGrid">
+            <div className="decisionList" aria-label="Decisions needed">
               {decisionsNeeded.map((item, idx) => (
-                <div className="decisionCard" key={idx}>
-                  <span>{idx + 1}</span>
-                  <Text mode={mode} as="h3" en={item.title.en} zh={item.title.zh} />
-                  <Text mode={mode} as="p" en={item.text.en} zh={item.text.zh} />
-                </div>
+                <article className="decisionRow" key={idx}>
+                  <div className="decisionNumber">{idx + 1}</div>
+                  <div className="decisionTitleWrap">
+                    <Text mode={mode} as="h3" en={item.title.en} zh={item.title.zh} />
+                  </div>
+                  <div className="decisionQuestion">
+                    <Text mode={mode} as="p" en={item.text.en} zh={item.text.zh} />
+                  </div>
+                </article>
               ))}
             </div>
           </Section>
@@ -1664,11 +1668,61 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .barValue { font-size: 12px; color: var(--ink); font-weight: 900; text-align: right; }
 .evidenceGrid,
 .issueGrid,
-.decisionGrid,
 .qaGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+.decisionList {
+  display: grid;
+  gap: 10px;
+}
+.decisionRow {
+  display: grid;
+  grid-template-columns: 38px minmax(150px, 0.28fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,253,246,0.9);
+  padding: 12px;
+  min-width: 0;
+}
+.decisionNumber {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--soft-plum);
+  color: var(--plum);
+  font-weight: 950;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+.decisionTitleWrap,
+.decisionQuestion {
+  min-width: 0;
+}
+.decisionRow h3 {
+  margin: 2px 0 0;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-size: 17px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+.decisionRow p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.42;
+  max-width: none;
+  overflow-wrap: anywhere;
+}
+.decisionRow .dualText {
+  gap: 3px;
+}
+.decisionRow .dualText > span:last-child {
+  font-size: 0.92em;
 }
 .evidenceCard h3 { margin-top: 12px; }
 .issueCard { position: relative; padding-left: 62px; min-height: 150px; }
@@ -1904,7 +1958,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
   .sectionSubtitle { font-size: 14px; }
   .heroMeta { gap: 6px; margin-bottom: 14px; }
   .pill { font-size: 11px; padding: 4px 8px; }
-  .kpiGrid, .rings, .cardGrid.three, .cardGrid.two, .forceGrid, .triad, .twoCol, .barGrid, .evidenceGrid, .issueGrid, .recommendGrid, .actionMiniGrid, .decisionGrid, .qaGrid { grid-template-columns: 1fr; }
+  .kpiGrid, .rings, .cardGrid.three, .cardGrid.two, .forceGrid, .triad, .twoCol, .barGrid, .evidenceGrid, .issueGrid, .recommendGrid, .actionMiniGrid, .qaGrid { grid-template-columns: 1fr; }
   .triadCenter { justify-self: stretch; border-radius: 18px; }
   .triadNode { min-height: auto; }
   .systemMap { display: grid; gap: 8px; }
@@ -1914,6 +1968,10 @@ td:first-child { font-weight: 850; color: var(--ink); }
   .infoCard.horizontal { grid-template-columns: 40px minmax(0, 1fr); }
   .issueCard, .decisionCard { padding-left: 18px; padding-top: 62px; }
   .issueNo, .decisionCard span { top: 18px; left: 18px; }
+  .decisionRow { grid-template-columns: 30px minmax(0, 1fr); gap: 8px 10px; padding: 11px; }
+  .decisionQuestion { grid-column: 1 / -1; padding-left: 40px; }
+  .decisionRow h3 { font-size: 16px; }
+  .decisionRow p { font-size: 13px; line-height: 1.4; }
   .timelineBlock { grid-template-columns: 1fr; }
   .barLine { grid-template-columns: 64px minmax(0, 1fr) 56px; }
   .modeToggle { right: 12px; bottom: 12px; }
