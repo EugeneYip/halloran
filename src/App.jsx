@@ -518,6 +518,7 @@ function Section({ id, children, className = "" }) {
 function App() {
   const [mode, setMode] = useState("en");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const active = useActiveSection(navItems.map(item => item.id));
   const currentMode = modes.find(item => item.key === mode) || modes[0];
 
@@ -560,9 +561,8 @@ function App() {
 
       <header className="hero">
         <div className="heroMeta">
-          <StatusPill tone="plum"><Text mode={mode} en="SCHM 6201 Case Infrastructure" zh="SCHM 6201 個案基礎架構" /></StatusPill>
+          <StatusPill tone="plum"><Text mode={mode} en="SCHM 6201 Case Guide" zh="SCHM 6201 個案指南" /></StatusPill>
           <StatusPill tone="teal"><Text mode={mode} en="Halloran Metals" zh="Halloran Metals" /></StatusPill>
-          <StatusPill tone="gold"><Text mode={mode} en={currentMode.full} zh={currentMode.full} /></StatusPill>
         </div>
         <div className="heroGrid">
           <div className="heroText">
@@ -589,7 +589,7 @@ function App() {
             <Text mode={mode} as="h3" className="panelTitle" en="One sentence thesis" zh="一句話主張" />
             <Text mode={mode} as="p" className="panelText" en="Adopt Allied’s analytical discipline, not Allied’s strategy." zh="採用 Allied 的分析紀律，不採用 Allied 的策略。" />
             <div className="miniDivider" />
-            <Text mode={mode} as="p" className="panelSub" en="This version separates what the case proves, what it implies, and what still requires internal data." zh="本版本區分個案已證明的事實、可合理推論的判斷，以及仍需內部資料驗證的事項。" />
+            <Text mode={mode} as="p" className="panelSub" en="Use the case facts to separate the decision, the evidence, and the data still needed before management changes the network." zh="用個案事實區分決策、證據，以及管理階層改變網絡前仍需取得的資料。" />
           </div>
         </div>
         <div className="kpiGrid">
@@ -597,8 +597,22 @@ function App() {
         </div>
       </header>
 
+      <div className="mobileStickySummary">
+        <Text mode={mode} en="Core: adopt Allied’s analytical discipline, not Allied’s strategy." zh="核心：採用 Allied 的分析紀律，不採用 Allied 的策略。" />
+      </div>
+
       <div className="layout">
         <aside className="sideNav" aria-label="Section navigation">
+          <div className="sideSummary">
+            <div className="sideSummaryKicker"><Text mode={mode} en="Case core" zh="個案核心" /></div>
+            <Text mode={mode} as="p" en="Adopt Allied’s analytical discipline, not Allied’s strategy." zh="採用 Allied 的分析紀律，不採用 Allied 的策略。" />
+            <div className="sideSummaryGrid">
+              <span><Text mode={mode} en="Risk" zh="風險" /></span>
+              <Text mode={mode} en="Cash and inventory pressure" zh="現金與庫存壓力" />
+              <span><Text mode={mode} en="Action" zh="行動" /></span>
+              <Text mode={mode} en="Measure, pilot, price, then invest" zh="先衡量、試點、定價，再投資" />
+            </div>
+          </div>
           <div className="sideNavTitle"><Text mode={mode} en="Reader Map" zh="閱讀地圖" /></div>
           {navItems.map(item => (
             <a key={item.id} href={`#${item.id}`} className={active === item.id ? "active" : ""}>
@@ -1037,12 +1051,31 @@ function App() {
         </div>
       )}
 
-      <div className="modeToggle" role="group" aria-label="Language mode">
-        {modes.map(item => (
-          <button key={item.key} className={mode === item.key ? "selected" : ""} onClick={() => setMode(item.key)}>
-            {item.label}
-          </button>
-        ))}
+      <div className={`modeToggle ${languageOpen ? "open" : ""}`} role="group" aria-label="Language mode">
+        {languageOpen && (
+          <div className="modeMenu" role="menu">
+            {modes.map(item => (
+              <button
+                key={item.key}
+                className={mode === item.key ? "selected" : ""}
+                onClick={() => { setMode(item.key); setLanguageOpen(false); }}
+                role="menuitem"
+              >
+                <span className="modeShort">{item.label}</span>
+                <span className="modeFull">{item.full}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        <button
+          className="modeMain"
+          onClick={() => setLanguageOpen(open => !open)}
+          aria-expanded={languageOpen}
+          aria-label="Change language mode"
+        >
+          <span>{currentMode.label}</span>
+          <span className="modeChevron">⌃</span>
+        </button>
       </div>
     </div>
   );
@@ -1085,6 +1118,7 @@ body { margin: 0; background: var(--bg); }
   line-height: 1.62;
 }
 .hmPage a { color: inherit; text-decoration: none; }
+.hmPage p, .hmPage li, .hmPage td, .hmPage th { overflow-wrap: break-word; }
 .hero {
   max-width: 1280px;
   margin: 0 auto;
@@ -1127,16 +1161,16 @@ body { margin: 0; background: var(--bg); }
   margin: 0;
   max-width: 980px;
   font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
-  font-size: clamp(34px, 6vw, 72px);
-  line-height: 0.98;
+  font-size: clamp(34px, 5.4vw, 66px);
+  line-height: 1.02;
   letter-spacing: -0.035em;
   color: var(--ink);
 }
 .heroLead {
-  max-width: 900px;
-  margin: 22px 0 0;
+  max-width: 74ch;
+  margin: 20px 0 0;
   color: var(--muted);
-  font-size: clamp(16px, 1.6vw, 20px);
+  font-size: clamp(15px, 1.45vw, 18px);
 }
 .heroActionRow {
   display: flex;
@@ -1172,8 +1206,8 @@ body { margin: 0; background: var(--bg); }
 }
 .panelText {
   margin: 0;
-  font-size: 25px;
-  line-height: 1.22;
+  font-size: clamp(20px, 2.1vw, 24px);
+  line-height: 1.28;
   font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
   color: var(--ink);
 }
@@ -1189,7 +1223,7 @@ body { margin: 0; background: var(--bg); }
   border: 1px solid var(--line);
   border-radius: 22px;
   background: rgba(255,253,246,0.85);
-  padding: 18px;
+  padding: 16px;
   min-width: 0;
 }
 .kpi.red { border-color: rgba(199,62,58,0.25); background: var(--soft-red); }
@@ -1202,20 +1236,56 @@ body { margin: 0; background: var(--bg); }
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 235px minmax(0, 1fr);
+  grid-template-columns: 255px minmax(0, 1fr);
   gap: 24px;
   padding: 0 24px 70px;
 }
 .sideNav {
   position: sticky;
-  top: 18px;
+  top: 16px;
   align-self: start;
-  max-height: calc(100vh - 36px);
+  max-height: calc(100vh - 32px);
   overflow: auto;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: 22px;
   background: rgba(255,253,246,0.86);
+}
+.sideSummary {
+  padding: 13px 13px 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(46,92,110,0.18);
+  border-radius: 18px;
+  background: var(--soft-teal);
+}
+.sideSummaryKicker {
+  margin-bottom: 6px;
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sideSummary p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 850;
+}
+.sideSummaryGrid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 8px;
+  row-gap: 4px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.sideSummaryGrid > span {
+  color: var(--teal);
+  font-weight: 900;
 }
 .sideNavTitle {
   font-size: 12px;
@@ -1230,9 +1300,9 @@ body { margin: 0; background: var(--bg); }
   padding: 9px 10px;
   border-radius: 13px;
   color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.22;
   margin-bottom: 3px;
 }
 .sideNav a.active,
@@ -1243,8 +1313,8 @@ body { margin: 0; background: var(--bg); }
 .content { min-width: 0; }
 .section {
   scroll-margin-top: 18px;
-  margin-bottom: 26px;
-  padding: clamp(20px, 3vw, 30px);
+  margin-bottom: 22px;
+  padding: clamp(18px, 2.5vw, 28px);
   border: 1px solid var(--line);
   border-radius: 28px;
   background: rgba(255,253,246,0.84);
@@ -1263,15 +1333,15 @@ body { margin: 0; background: var(--bg); }
   margin: 0;
   max-width: 940px;
   font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
-  font-size: clamp(26px, 3.5vw, 44px);
-  line-height: 1.08;
+  font-size: clamp(25px, 3.1vw, 40px);
+  line-height: 1.12;
   letter-spacing: -0.025em;
 }
 .sectionSubtitle {
-  max-width: 920px;
-  margin: 12px 0 0;
+  max-width: 76ch;
+  margin: 10px 0 0;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 15px;
 }
 .dualText {
   display: inline-flex;
@@ -1297,21 +1367,22 @@ h2.dualText > span:last-child { color: var(--plum); font-size: 0.62em; letter-sp
 .tableWrap table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px;
+  min-width: 680px;
 }
-.tableWrap.compact table { min-width: 640px; }
+.tableWrap.compact table { min-width: 600px; }
 th, td {
   vertical-align: top;
   text-align: left;
-  padding: 14px 14px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 13.2px;
+  line-height: 1.38;
+  overflow-wrap: break-word;
 }
 th {
   background: rgba(46,92,110,0.08);
   color: var(--teal);
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -1360,7 +1431,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
   border: 1px solid var(--line);
   border-radius: 22px;
   background: rgba(255,253,246,0.88);
-  padding: 18px;
+  padding: 16px;
 }
 .infoCard h3,
 .noteCard h3,
@@ -1374,8 +1445,8 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .oneMinute h3 {
   margin: 0 0 10px;
   font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
-  font-size: 22px;
-  line-height: 1.18;
+  font-size: 20px;
+  line-height: 1.2;
 }
 .infoCard p,
 .noteCard p,
@@ -1387,6 +1458,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .qaCard p,
 .draftBlock p,
 .oneMinute p { margin: 0; color: var(--muted); }
+.infoCard p, .noteCard p, .evidenceCard p, .issueCard p, .recommendCard p, .timelineBlock p, .decisionCard p, .qaCard p, .draftBlock p, .oneMinute p { max-width: 78ch; }
 .cleanList {
   margin: 0;
   padding: 0;
@@ -1395,7 +1467,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .cleanList li {
   position: relative;
   padding-left: 18px;
-  margin: 8px 0;
+  margin: 7px 0;
   color: var(--muted);
 }
 .cleanList li:before {
@@ -1676,29 +1748,67 @@ td:first-child { font-weight: 850; color: var(--ink); }
   right: 16px;
   bottom: 16px;
   z-index: 60;
-  display: flex;
-  gap: 4px;
-  padding: 5px;
-  border-radius: 999px;
-  border: 1px solid rgba(43,38,33,0.12);
-  background: rgba(255,253,246,0.86);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 24px rgba(43,38,33,0.12);
-  opacity: 0.78;
-  transition: opacity 160ms ease, transform 160ms ease;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
 }
-.modeToggle:hover { opacity: 1; transform: translateY(-1px); }
-.modeToggle button {
-  border: 0;
-  background: transparent;
-  color: var(--muted);
+.modeMain {
+  min-width: 64px;
+  min-height: 42px;
   border-radius: 999px;
-  padding: 7px 10px;
+  border: 1px solid rgba(43,38,33,0.14);
+  background: rgba(255,253,246,0.9);
+  color: var(--teal);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(43,38,33,0.14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 950;
   cursor: pointer;
 }
-.modeToggle button.selected { background: var(--teal); color: #fff; }
+.modeChevron {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  transition: transform 160ms ease;
+}
+.modeToggle.open .modeChevron { transform: rotate(180deg); }
+.modeMenu {
+  display: grid;
+  gap: 6px;
+  width: 176px;
+  padding: 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(43,38,33,0.12);
+  background: rgba(255,253,246,0.94);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 32px rgba(43,38,33,0.16);
+}
+.modeMenu button {
+  width: 100%;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: var(--muted);
+  padding: 9px 10px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+.modeMenu button:hover { background: var(--soft-teal); }
+.modeMenu button.selected { background: var(--teal); color: #fff; }
+.modeShort { font-size: 12px; font-weight: 950; }
+.modeFull { font-size: 12px; font-weight: 800; opacity: 0.9; }
+.mobileStickySummary {
+  display: none;
+}
 .mobileNavButton {
   position: fixed;
   left: 16px;
@@ -1758,6 +1868,24 @@ td:first-child { font-weight: 850; color: var(--ink); }
 
 @media (max-width: 1080px) {
   .heroGrid { grid-template-columns: 1fr; }
+  .mobileStickySummary {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 45;
+    margin: 0 14px 14px;
+    padding: 9px 12px;
+    border: 1px solid rgba(46,92,110,0.18);
+    border-radius: 999px;
+    background: rgba(231,240,239,0.94);
+    color: var(--teal);
+    font-size: 12.5px;
+    font-weight: 900;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    backdrop-filter: blur(12px);
+  }
   .kpiGrid, .rings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .layout { grid-template-columns: 1fr; }
   .sideNav { display: none; }
@@ -1766,11 +1894,16 @@ td:first-child { font-weight: 850; color: var(--ink); }
 }
 
 @media (max-width: 760px) {
-  .hero { padding: 26px 14px 18px; }
-  .layout { padding: 0 14px 76px; }
-  .heroText, .heroPanel, .section { border-radius: 22px; padding: 18px; }
-  .heroTitle { font-size: clamp(34px, 12vw, 50px); }
-  .heroLead { font-size: 15px; }
+  .hero { padding: 24px 12px 14px; }
+  .layout { padding: 0 12px 86px; }
+  .heroText, .heroPanel, .section { border-radius: 20px; padding: 16px; }
+  .section { margin-bottom: 16px; }
+  .heroTitle { font-size: clamp(32px, 11vw, 46px); line-height: 1.04; }
+  .heroLead { font-size: 14.5px; line-height: 1.55; }
+  .sectionTitle { font-size: clamp(23px, 8vw, 34px); }
+  .sectionSubtitle { font-size: 14px; }
+  .heroMeta { gap: 6px; margin-bottom: 14px; }
+  .pill { font-size: 11px; padding: 4px 8px; }
   .kpiGrid, .rings, .cardGrid.three, .cardGrid.two, .forceGrid, .triad, .twoCol, .barGrid, .evidenceGrid, .issueGrid, .recommendGrid, .actionMiniGrid, .decisionGrid, .qaGrid { grid-template-columns: 1fr; }
   .triadCenter { justify-self: stretch; border-radius: 18px; }
   .triadNode { min-height: auto; }
@@ -1783,9 +1916,13 @@ td:first-child { font-weight: 850; color: var(--ink); }
   .issueNo, .decisionCard span { top: 18px; left: 18px; }
   .timelineBlock { grid-template-columns: 1fr; }
   .barLine { grid-template-columns: 64px minmax(0, 1fr) 56px; }
-  .modeToggle { right: 12px; bottom: 12px; transform: scale(0.94); transform-origin: right bottom; }
+  .modeToggle { right: 12px; bottom: 12px; }
+  .modeMenu { width: 168px; }
   .mobileNavButton { left: 12px; bottom: 12px; }
-  .tableWrap table { min-width: 620px; }
+  .tableWrap table { min-width: 560px; }
+  th, td { padding: 10px 10px; font-size: 12.8px; }
+  .draftBlock p { font-size: 14px; line-height: 1.58; }
+  .barLine { grid-template-columns: 56px minmax(0, 1fr) 52px; }
 }
 
 @media print {
