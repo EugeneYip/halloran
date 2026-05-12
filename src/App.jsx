@@ -24,9 +24,49 @@ const palette = {
 
 const modes = [
   { key: "en", label: "EN", full: "English" },
-  { key: "zh", label: "中", full: "中文" },
+  { key: "zh", label: "中", full: "繁體中文" },
+  { key: "zh-hans", label: "简", full: "简体中文" },
   { key: "bi", label: "EN｜中", full: "Bilingual" }
 ];
+
+const simplifiedPhraseMap = [
+  ["中華民國", "中华民国"],
+  ["臺灣", "台湾"],
+  ["臺", "台"],
+  ["甚麼", "什么"],
+  ["營業利益", "营业利润"],
+  ["淨利", "净利润"],
+  ["營運", "运营"],
+  ["作業", "作业"],
+  ["資料", "资料"],
+  ["品質", "品质"],
+  ["決策", "决策"],
+  ["證據", "证据"],
+  ["財務", "财务"],
+  ["服務", "服务"],
+  ["庫存", "库存"],
+  ["顧客", "顾客"],
+  ["分權", "分权"],
+  ["優勢", "优势"],
+  ["關鍵", "关键"],
+  ["策略", "策略"],
+  ["獲利", "获利"],
+  ["衰退期", "衰退期"],
+  ["新英格蘭", "新英格兰"]
+];
+
+const traditionalToSimplifiedMap = {
+  "並":"并","來":"来","佔":"占","併":"并","係":"系","個":"个","倉":"仓","備":"备","傳":"传","傷":"伤","僅":"仅","價":"价","億":"亿","優":"优","儲":"储","內":"内","兩":"两","則":"则","創":"创","劇":"剧","動":"动","務":"务","勢":"势","協":"协","區":"区","壓":"压","壞":"坏","夠":"够","夾":"夹","學":"学","實":"实","寫":"写","寬":"宽","專":"专","對":"对","導":"导","層":"层","屬":"属","帳":"账","幫":"帮","幾":"几","庫":"库","廠":"厂","廣":"广","張":"张","強":"强","後":"后","從":"从","慮":"虑","應":"应","戶":"户","採":"采","損":"损","撐":"撑","撥":"拨","擇":"择","擔":"担","據":"据","擴":"扩","數":"数","於":"于","會":"会","東":"东","桿":"杆","條":"条","槓":"杠","標":"标","樞":"枢","樣":"样","機":"机","檻":"槛","欄":"栏","權":"权","氣":"气","決":"决","沒":"没","淨":"净","測":"测","準":"准","潛":"潜","潤":"润","濟":"济","為":"为","無":"无","營":"营","爭":"争","獨":"独","獲":"获","異":"异","當":"当","礎":"础","稅":"税","種":"种","穩":"稳","競":"竞","範":"范","篩":"筛","簡":"简","籠":"笼","級":"级","組":"组","結":"结","絕":"绝","絡":"络","給":"给","統":"统","綁":"绑","經":"经","綠":"绿","維":"维","網":"网","緊":"紧","線":"线","緩":"缓","縮":"缩","總":"总","績":"绩","義":"义","習":"习","肅":"肃","與":"与","萬":"万","著":"着","蓋":"盖","藉":"借","蘭":"兰","處":"处","號":"号","虧":"亏","衝":"冲","補":"补","製":"制","複":"复","見":"见","規":"规","視":"视","覺":"觉","訂":"订","計":"计","訊":"讯","討":"讨","設":"设","訴":"诉","診":"诊","註":"注","評":"评","試":"试","話":"话","該":"该","語":"语","誤":"误","說":"说","課":"课","調":"调","論":"论","諾":"诺","講":"讲","謹":"谨","證":"证","議":"议","護":"护","讀":"读","變":"变","讓":"让","負":"负","財":"财","貨":"货","責":"责","買":"买","費":"费","資":"资","賣":"卖","質":"质","賴":"赖","購":"购","趨":"趋","較":"较","輕":"轻","輯":"辑","輸":"输","轉":"转","這":"这","連":"连","週":"周","進":"进","運":"运","過":"过","遠":"远","適":"适","選":"选","還":"还","邊":"边","邏":"逻","釋":"释","銷":"销","鋁":"铝","鋸":"锯","鋼":"钢","錯":"错","鍵":"键","鎖":"锁","鏈":"链","鐘":"钟","鐵":"铁","長":"长","門":"门","閉":"闭","開":"开","間":"间","閱":"阅","關":"关","階":"阶","險":"险","隱":"隐","難":"难","韌":"韧","頁":"页","項":"项","順":"顺","須":"须","預":"预","頭":"头","頻":"频","題":"题","額":"额","願":"愿","類":"类","顧":"顾","顯":"显","風":"风","餘":"余","驅":"驱","體":"体","麼":"么","點":"点","國":"国","圍":"围","圖":"图","執":"执","報":"报","場":"场","單":"单","問":"问","嚴":"严","噸":"吨","園":"园","圓":"圆","塊":"块","夥":"伙","奮":"奋","奧":"奥","婦":"妇","媽":"妈","嬰":"婴","孫":"孙","審":"审","寫":"写","寶":"宝","將":"将","尋":"寻","對":"对","導":"导","屆":"届","歲":"岁","帶":"带","幣":"币","幹":"干","幫":"帮","庫":"库","廢":"废","廳":"厅","彈":"弹","彙":"汇","彎":"弯","彿":"佛","徹":"彻","徵":"征","德":"德","憂":"忧","懷":"怀","懸":"悬","戀":"恋","戰":"战","戶":"户","拋":"抛","挾":"挟","捲":"卷","掃":"扫","掛":"挂","揚":"扬","換":"换","揮":"挥","搖":"摇","摺":"折","攝":"摄","攜":"携","敗":"败","敘":"叙","斂":"敛","斷":"断","時":"时","晉":"晋","暫":"暂","曆":"历","書":"书","會":"会","東":"东","業":"业","極":"极","榮":"荣","構":"构","樓":"楼","樂":"乐","樑":"梁","標":"标","樣":"样","樸":"朴","樹":"树","橋":"桥","機":"机","檢":"检","櫃":"柜","歐":"欧","歷":"历","歸":"归","殘":"残","殼":"壳","殿":"殿","毀":"毁","氣":"气","決":"决","況":"况","沒":"没","沖":"冲","溝":"沟","滾":"滚","漢":"汉","滿":"满","灣":"湾","潰":"溃","濃":"浓","濤":"涛","瀏覽":"浏览","災":"灾","為":"为","烏":"乌","無":"无","爐":"炉","爭":"争","爺":"爷","爾":"尔","牆":"墙","牽":"牵","獻":"献","獨":"独","獲":"获","環":"环","現":"现","畫":"画","當":"当","疇":"畴","療":"疗","盜":"盗","盡":"尽","監":"监","盤":"盘","盧":"卢","眾":"众","確":"确","碼":"码","礦":"矿","禮":"礼","禍":"祸","禦":"御","離":"离","穀":"谷","積":"积","穩":"稳","窩":"窝","競":"竞","竄":"窜","筆":"笔","築":"筑","篤":"笃","簽":"签","籌":"筹","籤":"签","糾":"纠","紀":"纪","約":"约","紅":"红","紡":"纺","紐":"纽","純":"纯","紙":"纸","級":"级","納":"纳","紛":"纷","細":"细","終":"终","絆":"绊","絕":"绝","絡":"络","統":"统","絲":"丝","經":"经","綜":"综","綠":"绿","維":"维","綱":"纲","網":"网","緊":"紧","線":"线","緩":"缓","練":"练","縣":"县","縫":"缝","縮":"缩","總":"总","績":"绩","織":"织","續":"续","纜":"缆","罷":"罢","羅":"罗","聽":"听","職":"职","聯":"联","聰":"聪","肅":"肃","脫":"脱","腦":"脑","腳":"脚","與":"与","興":"兴","舉":"举","舊":"旧","艙":"舱","艦":"舰","艱":"艰","藝":"艺","蘇":"苏","處":"处","號":"号","虛":"虚","蟲":"虫","衛":"卫","衝":"冲","術":"术","衹":"只","製":"制","複":"复","規":"规","覓":"觅","視":"视","覺":"觉","觀":"观","觸":"触","訓":"训","記":"记","訟":"讼","訣":"诀","訪":"访","設":"设","許":"许","訴":"诉","診":"诊","註":"注","詐":"诈","評":"评","詞":"词","試":"试","詩":"诗","話":"话","該":"该","詳":"详","語":"语","誤":"误","說":"说","課":"课","誰":"谁","調":"调","談":"谈","請":"请","諸":"诸","諾":"诺","謀":"谋","謂":"谓","謹":"谨","識":"识","證":"证","譯":"译","議":"议","譽":"誉","護":"护","讀":"读","變":"变","讓":"让","豐":"丰","貝":"贝","負":"负","財":"财","貨":"货","責":"责","貯":"贮","貿":"贸","賀":"贺","資":"资","賃":"赁","賄":"贿","賈":"贾","賓":"宾","賣":"卖","賦":"赋","質":"质","賴":"赖","購":"购","贏":"赢","趕":"赶","趨":"趋","跡":"迹","踐":"践","車":"车","軋":"轧","軌":"轨","軍":"军","軟":"软","較":"较","輔":"辅","輕":"轻","輛":"辆","輝":"辉","輯":"辑","輸":"输","轄":"辖","轉":"转","轟":"轰","辦":"办","辭":"辞","農":"农","迴":"回","這":"这","連":"连","週":"周","進":"进","遊":"游","運":"运","過":"过","達":"达","違":"违","遙":"遥","遜":"逊","遞":"递","遠":"远","適":"适","遲":"迟","遷":"迁","選":"选","遺":"遗","邁":"迈","還":"还","邊":"边","邏":"逻","鄉":"乡","鄭":"郑","鄰":"邻","醜":"丑","醫":"医","釐":"厘","針":"针","鈔":"钞","鈣":"钙","鈴":"铃","鉅":"巨","鉤":"钩","鉛":"铅","鉱":"矿","銀":"银","銅":"铜","銷":"销","鋁":"铝","鋒":"锋","鋼":"钢","錄":"录","錢":"钱","錯":"错","鍊":"炼","鍋":"锅","鍵":"键","鎂":"镁","鎖":"锁","鎮":"镇","鏡":"镜","鐵":"铁","鑄":"铸","長":"长","門":"门","閃":"闪","閉":"闭","開":"开","閒":"闲","間":"间","閣":"阁","隊":"队","階":"阶","際":"际","隨":"随","險":"险","隱":"隐","雜":"杂","雙":"双","雞":"鸡","離":"离","難":"难","電":"电","霧":"雾","靈":"灵","靜":"静","響":"响","頁":"页","頂":"顶","項":"项","順":"顺","須":"须","頌":"颂","預":"预","頑":"顽","頓":"顿","領":"领","頭":"头","頰":"颊","頻":"频","題":"题","額":"额","顏":"颜","願":"愿","類":"类","顧":"顾","顯":"显","風":"风","飛":"飞","飾":"饰","餘":"余","館":"馆","饋":"馈","馬":"马","駐":"驻","騰":"腾","驅":"驱","驗":"验","驚":"惊","體":"体","鬆":"松","鬥":"斗","魚":"鱼","鮮":"鲜","鹽":"盐","麗":"丽","麥":"麦","麼":"么","黃":"黄","點":"点"
+};
+
+function toSimplified(value) {
+  if (value === null || value === undefined) return value;
+  let output = String(value);
+  simplifiedPhraseMap.forEach(([traditional, simplified]) => {
+    output = output.split(traditional).join(simplified);
+  });
+  return Array.from(output).map(char => traditionalToSimplifiedMap[char] || char).join("");
+}
 
 const navItems = [
   { id: "decision", en: "Decision", zh: "決策" },
@@ -416,6 +456,7 @@ function Text({ en, zh, mode, as = "span", className = "" }) {
   const Tag = as;
   if (mode === "en") return <Tag className={className}>{en}</Tag>;
   if (mode === "zh") return <Tag className={className} lang="zh-Hant">{zh}</Tag>;
+  if (mode === "zh-hans") return <Tag className={className} lang="zh-Hans">{toSimplified(zh)}</Tag>;
   return (
     <Tag className={`${className} dualText`}>
       <span>{en}</span>
@@ -1118,7 +1159,7 @@ body { margin: 0; background: var(--bg); }
     radial-gradient(circle at 90% 10%, rgba(98, 41, 84, 0.08), transparent 30rem),
     var(--bg);
   color: var(--ink);
-  font-family: "Yu Gothic", "Noto Sans TC", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Yu Gothic", "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", "PingFang SC", "Noto Sans SC", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.62;
 }
 .hmPage a { color: inherit; text-decoration: none; }
@@ -1164,7 +1205,7 @@ body { margin: 0; background: var(--bg); }
 .heroTitle {
   margin: 0;
   max-width: 980px;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: clamp(34px, 5.4vw, 66px);
   line-height: 1.02;
   letter-spacing: -0.035em;
@@ -1204,7 +1245,7 @@ body { margin: 0; background: var(--bg); }
 }
 .panelTitle {
   margin: 0 0 14px;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: 22px;
   color: var(--plum);
 }
@@ -1212,7 +1253,7 @@ body { margin: 0; background: var(--bg); }
   margin: 0;
   font-size: clamp(20px, 2.1vw, 24px);
   line-height: 1.28;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   color: var(--ink);
 }
 .panelSub { margin: 0; color: var(--muted); font-size: 14px; }
@@ -1336,7 +1377,7 @@ body { margin: 0; background: var(--bg); }
 .sectionTitle {
   margin: 0;
   max-width: 940px;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: clamp(25px, 3.1vw, 40px);
   line-height: 1.12;
   letter-spacing: -0.025em;
@@ -1448,7 +1489,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .draftBlock h3,
 .oneMinute h3 {
   margin: 0 0 10px;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: 20px;
   line-height: 1.2;
 }
@@ -1527,7 +1568,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
   background: rgba(255,253,246,0.9);
   min-height: 165px;
 }
-.triadNode h3 { margin: 0 0 8px; font-family: Georgia, "Times New Roman", "Noto Serif TC", serif; font-size: 22px; }
+.triadNode h3 { margin: 0 0 8px; font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif; font-size: 22px; }
 .triadNode p { margin: 0; color: var(--muted); }
 .node1 { border-color: rgba(46,92,110,0.22); background: var(--soft-teal); }
 .node2 { border-color: rgba(98,41,84,0.2); background: var(--soft-plum); }
@@ -1644,7 +1685,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .ringItem p { margin: 0; color: var(--muted); font-weight: 800; font-size: 13px; }
 .subsectionTitle {
   margin: 22px 0 12px;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: 24px;
   font-weight: 900;
   color: var(--ink);
@@ -1705,7 +1746,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 }
 .decisionRow h3 {
   margin: 2px 0 0;
-  font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  font-family: Georgia, "Times New Roman", "Noto Serif TC", "Noto Serif SC", serif;
   font-size: 17px;
   line-height: 1.18;
   overflow-wrap: anywhere;
@@ -1834,7 +1875,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
 .modeMenu {
   display: grid;
   gap: 6px;
-  width: 176px;
+  width: 184px;
   padding: 8px;
   border-radius: 18px;
   border: 1px solid rgba(43,38,33,0.12);
@@ -1850,7 +1891,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
   color: var(--muted);
   padding: 9px 10px;
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
+  grid-template-columns: 48px minmax(0, 1fr);
   gap: 8px;
   align-items: center;
   text-align: left;
@@ -1975,7 +2016,7 @@ td:first-child { font-weight: 850; color: var(--ink); }
   .timelineBlock { grid-template-columns: 1fr; }
   .barLine { grid-template-columns: 64px minmax(0, 1fr) 56px; }
   .modeToggle { right: 12px; bottom: 12px; }
-  .modeMenu { width: 168px; }
+  .modeMenu { width: 176px; }
   .mobileNavButton { left: 12px; bottom: 12px; }
   .tableWrap table { min-width: 560px; }
   th, td { padding: 10px 10px; font-size: 12.8px; }
